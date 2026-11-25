@@ -1,0 +1,33 @@
+<h1>Appointments for <%= @physician.name %></h1>
+
+<div id="appointments-feedback" role="alert" aria-live="polite"></div>
+
+<section aria-label="Free slots">
+  <h2>Available Slots</h2>
+  <div id="free-slots"
+       data-physician-id="<%= @physician.id %>"
+       data-create-url="<%= physician_appointments_path(@physician, format: :json) %>">
+    <% if @free_slots.present? %>
+      <% @free_slots.each do |slot| %>
+        <div class="free-slot-row" data-slot-time="<%= slot.iso8601 %>">
+          <span><%= slot.strftime("%Y-%m-%d %H:%M") %></span>
+          <button type="button"
+                  class="book-slot-btn"
+                  data-starts-at="<%= slot.iso8601 %>"
+                  aria-label="Book slot at <%= slot.strftime("%Y-%m-%d %H:%M") %>">
+            Book
+          </button>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No free slots available.</p>
+    <% end %>
+  </div>
+</section>
+
+<section aria-label="Booked appointments">
+  <h2>Booked Appointments</h2>
+  <div id="appointments-list">
+    <%= render partial: "appointments/appointment", collection: @appointments, as: :appointment %>
+  </div>
+</section>
