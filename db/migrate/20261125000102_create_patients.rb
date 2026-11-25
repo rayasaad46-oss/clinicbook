@@ -1,1 +1,13 @@
-﻿class CreatePatients < ActiveRecord::Migration[8.1];  def change;    create_table :patients do |t|;      t.string :name;      t.string :phone;      t.timestamps;    end;  end;end
+﻿class CreatePatients < ActiveRecord::Migration[8.1]
+def change
+create_table :patients do |t|
+t.string :name, null: false
+t.string :email, null: false
+t.string :phone
+
+  t.timestamps
+end
+
+add_index :patients, :email, unique: true
+end
+end
