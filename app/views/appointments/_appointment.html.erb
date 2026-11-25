@@ -1,0 +1,11 @@
+<div id="<%= dom_id(appointment) %>" class="appointment-row">
+  <p>
+    <strong>Patient:</strong> <%= appointment.patient&.name %> |
+    <strong>Starts at:</strong> <%= appointment.starts_at %> |
+    <strong>Status:</strong> <%= appointment.status %>
+  </p>
+  <%= button_to "Delete",
+                physician_appointment_path(@physician, appointment),
+                method: :delete,
+                data: { turbo_confirm: "Are you sure?" } %>
+</div>
