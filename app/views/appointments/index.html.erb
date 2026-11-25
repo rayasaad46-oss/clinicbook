@@ -31,3 +31,4 @@
     <%= render partial: "appointments/appointment", collection: @appointments, as: :appointment %>
   </div>
 </section>
+<%= javascript_include_tag "appointments_booking", "data-turbo-track": "reload", defer: true %>
