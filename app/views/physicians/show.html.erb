@@ -1,0 +1,37 @@
+<h1><%= @physician.name %></h1>
+<p>Specialty: <%= @physician.specialty %></p>
+
+<h2>Available Slots</h2>
+<div id="slots-list">
+  <% if @available_slots.present? %>
+    <% @available_slots.each do |slot| %>
+      <div class="slot-item" data-slot-iso="<%= slot.iso8601 %>">
+        <span><%= slot.strftime("%Y-%m-%d %H:%M") %></span>
+     <form action="<%= physician_appointments_path(@physician) %>" method="post" data-turbo="false">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <%= hidden_field_tag "appointment[patient_id]", @patient&.id %>
+  <%= hidden_field_tag "appointment[starts_at]", slot.iso8601 %>
+  <%= hidden_field_tag "appointment[status]", "booked" %>
+  <button type="submit" aria-label="Book appointment with <%= @physician.name %> at <%= slot.strftime('%Y-%m-%d %H:%M') %>">Book</button>
+</form>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No available slots.</p>
+  <% end %>
+</div>
+
+<div id="booking-message"></div>
+
+<h2>Booked Appointments</h2>
+<div id="appointments-list">
+  <% @physician.appointments.includes(:patient).order(:starts_at).each do |appt| %>
+    <div class="appointment-item">
+      <span><%= appt.starts_at.strftime("%Y-%m-%d %H:%M") %></span>
+      <span>— <%= appt.patient&.name || "Patient ##{appt.patient_id}" %></span>
+      <span>(<%= appt.status %>)</span>
+    </div>
+  <% end %>
+</div>
+
+ 
