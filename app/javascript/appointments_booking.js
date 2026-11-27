@@ -23,12 +23,24 @@ const startsAt = data.starts_at || "";
 const status = data.status || "booked";
 
 const info = document.createElement("p");
-info.innerHTML =
-  <strong>Patient:</strong> ${escapeHtml(patientName)} |  +
-  <strong>Starts at:</strong> ${escapeHtml(startsAt)} |  +
-  <strong>Status:</strong> ${escapeHtml(status)};
 
+const p1 = document.createElement("strong");
+p1.textContent = "Patient: ";
+const p1Val = document.createTextNode(patientName + " | ");
+
+const p2 = document.createElement("strong");
+p2.textContent = "Starts at: ";
+const p2Val = document.createTextNode(startsAt + " | ");
+
+const p3 = document.createElement("strong");
+p3.textContent = "Status: ";
+const p3Val = document.createTextNode(status);
+
+info.append(p1, p1Val, p2, p2Val, p3, p3Val);
 row.appendChild(info);
+
+
+
 appointmentsList.appendChild(row);
 }
 
@@ -37,7 +49,7 @@ return String(value)
 .replaceAll("&", "&")
 .replaceAll("<", "<")
 .replaceAll(">", ">")
-.replaceAll('"', """)
+.replaceAll("'", "&#39;")
 .replaceAll("'", "'");
 }
 
@@ -74,8 +86,7 @@ try {
     })
   });
 
-  const payload = await response.json().catch(() => ({}));
-
+  const payload = await response.json().catch(() => { return {}; });
   if (!response.ok) {
     const errorMessage =
       payload.error ||
